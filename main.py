@@ -3,6 +3,9 @@ from settings import *
 import pygame as pg
 import sys
 from map_renderer import MapRenderer
+from player import Player
+from bsp import BSP
+
 
 class DoomEngine:
     def __init__(self, wad_path='wad/DOOM.WAD'):
@@ -16,15 +19,19 @@ class DoomEngine:
     def on_init(self):
         self.wad_data = WADData(self, map_name='E1M1')
         self.map_renderer = MapRenderer(self)
+        self.player = Player(self)
+        self.bsp = BSP(self)
 
     def update(self):
+        self.player.update()
+        self.bsp.update()
         self.dt = self.clock.tick()
-        pg.display.flip()
-        pg.display.set_caption(f'{self.clock.get_fps()}')
-        
+        pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
+
     def draw(self):
         self.screen.fill('black')
         self.map_renderer.draw()
+        pg.display.flip()
 
     def check_events(self):
         for e in pg.event.get():
@@ -39,6 +46,22 @@ class DoomEngine:
         pg.quit()
         sys.exit()
 
+
 if __name__ == '__main__':
     doom = DoomEngine()
     doom.run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
